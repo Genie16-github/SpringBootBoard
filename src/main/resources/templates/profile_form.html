@@ -1,0 +1,19 @@
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<div layout:fragment="content" class="container">
+  <h5 class="my-3 border-bottom pb-2">프로필</h5>
+  <div>
+    <div class="mb-3">
+      <label for="username" class="form-label">사용자 ID</label>
+      <h2 th:text="${user.getUsername()}"></h2>
+    </div>
+    <div class="mb-3">
+      <label for="nickname" class="form-label">닉네임</label>
+      <h2 th:text="${user.getNickname()}"></h2>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">이메일</label>
+      <h2 th:text="${user.getEmail()}"></h2>
+    </div>
+  </div>
+</div>
+</html>
