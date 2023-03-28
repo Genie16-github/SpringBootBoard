@@ -1,0 +1,23 @@
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: "GmarketSansMedium", serif;
+    text-underline-position: under;
+}
+
+button[name="so_btn1"] {
+    background-color: #0d6efd;
+    color: #FFFFFF;
+    --bs-btn-hover-bg: #0b5ed7;
+}
+
+button[name="so_btn2"] {
+    background-color: #ffffff;
+    color: #000000;
+    --bs-btn-hover-bg: #6799FF;
+}
