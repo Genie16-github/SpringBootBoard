@@ -1,5 +1,6 @@
 server:
   port: 8080 # 포트번호 8080
+  # test
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
