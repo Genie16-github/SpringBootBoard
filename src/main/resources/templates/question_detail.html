@@ -117,7 +117,8 @@
                 </div>
             </div>
             <!-- 댓글 등록 창-->
-            <div class="comment-answer-block" style="display: none" th:id="${answer.id}">
+            <div class="comment-answer-block" style="display: none" th:id="${answer.id}" th:classappend="|cm_${answer.getId()}|">
+                <a th:id="|answer-${answer.id}|"></a>
                 <div class="my-2 alert alert-warning" sec:authorize="isAnonymous()">
                     <small>댓글 작성은 로그인이 필요합니다.</small>
                 </div>
@@ -133,7 +134,8 @@
                 </div>
                 <!-- 댓글 창-->
                 <ul class="list-group">
-                    <li th:each="comments: ${answer.getCommentList()}" class="comment-item list-group-item">
+                    <li th:each="i: ${#numbers.sequence(answer.getCommentList().size()-1, 0, -1)}" class="comment-item list-group-item"
+                        th:with="comments=${answer.getCommentList().get(i)}">
                         <div class="d-flex flex-column">
                             <div class="d-flex flex-shrink-0">
                                 <div>⎿</div>
@@ -210,7 +212,6 @@
     Array.from(page_elements).forEach(function (element) {
         element.addEventListener('click', function () {
             document.getElementById('ansPage').value = this.dataset.page;
-            document.getElementById('so').value = this.getAttribute('data-so');
             document.getElementById('searchForm').submit();
         });
     });
@@ -248,7 +249,12 @@
         });
     });
 
+    if (window.location.hash && window.location.hash.indexOf("#answer-") !== -1) {
+        const commentId = window.location.hash.replace("#answer-", "");
+        $(function(){
+            document.getElementsByClassName("cm_" + commentId)[0].style.display = "block";
+        });
+    }
 
 </script>
-
 </html>

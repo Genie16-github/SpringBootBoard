@@ -42,7 +42,7 @@ public class CommentController {
         SiteUser siteUser = this.userService.getUser(principal.getName());
         Question question = answer.getQuestion();
 
-        Page<Answer> ansPaging = this.answerService.getList(question, 0, so);
+        Page<Answer> ansPaging = this.answerService.getList(question, page, so);
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("question", question);
@@ -51,8 +51,9 @@ public class CommentController {
         }
 
         Comment comment = this.commentService.create(answer, commentForm.getContent(), siteUser);
+        model.addAttribute("ansPage", page);
         model.addAttribute("so", so);
-        return String.format("redirect:/question/detail/%s?page=%s&so=%s#answer_%s", comment.getAnswer().getQuestion().getId(), page, so, comment.getAnswer().getId());
+        return String.format("redirect:/question/detail/%s?ansPage=%s&so=%s#answer-%s", comment.getAnswer().getQuestion().getId(), page, so, comment.getAnswer().getId());
 
     }
 }

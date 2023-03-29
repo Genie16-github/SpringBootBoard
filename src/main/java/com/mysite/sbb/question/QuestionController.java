@@ -43,6 +43,7 @@ public class QuestionController {
                          @RequestParam(value = "so", defaultValue = "recent") String so,
                          @RequestParam(value = "ansPage", defaultValue = "0") int ansPage, Principal principal){
         Question question = this.questionService.getQuestion(id);
+
         // 작성자 제외 조회 수 증가
         if (principal == null){
             this.questionService.viewPlus(question);
@@ -61,6 +62,7 @@ public class QuestionController {
         Page<Answer> ansPaging = this.answerService.getList(question, ansPage, so);
         model.addAttribute("ansPaging", ansPaging);
         model.addAttribute("question", question);
+        model.addAttribute("so", so);
 
         return "question_detail";
     }
