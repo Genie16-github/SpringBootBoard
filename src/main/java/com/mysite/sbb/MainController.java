@@ -16,6 +16,7 @@ public class MainController {
 
     @GetMapping("/")
     public String root() {
-        return "redirect:/question/list";
+        // 질문 게시판으로
+        return "redirect:/question/1/list";
     }
 }

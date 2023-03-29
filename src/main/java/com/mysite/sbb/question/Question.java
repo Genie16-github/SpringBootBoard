@@ -4,9 +4,11 @@ import com.mysite.sbb.answer.Answer;
 import com.mysite.sbb.comment.Comment;
 import com.mysite.sbb.user.SiteUser;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -37,6 +39,9 @@ public class Question {
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList = new ArrayList<>();
 
+    // 1 : 질문 게시판  2 : 자유 게시판
+    @ColumnDefault("1")
+    private int category;
 
     public void addAnswer(Answer a) {
         a.setQuestion(this);

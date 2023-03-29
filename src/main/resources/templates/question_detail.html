@@ -64,10 +64,10 @@
         </div>
         <div class="flex-grow-1"></div>
         <div class="flex-shrink-0 btn-group">
-            <button id="so_btn1" name="so_btn1" type="button" class="so-link btn btn-primary btn-sm"
+            <button id="so_btn1" th:name="${name1}" type="button" class="so-link btn btn-primary btn-sm"
                     th:data-so="recent">최신순
             </button>
-            <button id="so_btn2" name="so_btn2" type="button" class="so-link btn btn-primary btn-sm"
+            <button id="so_btn2" th:name="${name2}" type="button" class="so-link btn btn-primary btn-sm"
                     th:data-so="recommend">인기순
             </button>
         </div>
@@ -193,7 +193,6 @@
     const so_elements = document.getElementsByClassName("so-link");
     Array.from(so_elements).forEach(function (element) {
         element.addEventListener('click', function () {
-
             if (element.id === 'so_btn1') {
                 document.getElementById('so_btn1').setAttribute('name', 'so_btn1');
                 document.getElementById('so_btn2').setAttribute('name', 'so_btn2');
@@ -201,7 +200,7 @@
                 document.getElementById('so_btn1').setAttribute('name', 'so_btn2');
                 document.getElementById('so_btn2').setAttribute('name', 'so_btn1');
             }
-            document.getElementById('so').value = this.dataset.so;
+            document.getElementById('so').value = this.getAttribute('data-so');
             document.getElementById('searchForm').submit();
         });
     });
@@ -211,6 +210,7 @@
     Array.from(page_elements).forEach(function (element) {
         element.addEventListener('click', function () {
             document.getElementById('ansPage').value = this.dataset.page;
+            document.getElementById('so').value = this.getAttribute('data-so');
             document.getElementById('searchForm').submit();
         });
     });

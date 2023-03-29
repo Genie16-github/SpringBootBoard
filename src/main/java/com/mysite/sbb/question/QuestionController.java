@@ -28,12 +28,13 @@ public class QuestionController {
     private final AnswerService answerService;
     private final UserService userService;
 
-    @GetMapping("/list")
-    public String list(Model model, @RequestParam(value="page", defaultValue="0") int page,
+    @GetMapping("/{category}/list")
+    public String list(Model model, @PathVariable("category") Integer category, @RequestParam(value="page", defaultValue="0") int page,
                        @RequestParam(value = "kw", defaultValue = "") String kw) {
-        Page<Question> paging = this.questionService.getList(page, kw);
+        Page<Question> paging = this.questionService.getList(page, kw, category);
         model.addAttribute("paging", paging);
         model.addAttribute("kw", kw);
+        model.addAttribute("category", category);
         return "question_list";
     }
 
@@ -50,30 +51,38 @@ public class QuestionController {
                 this.questionService.viewPlus(question);
             }
         }
-
+        if (so.equals("recent")){
+            model.addAttribute("name1", "so_btn1");
+            model.addAttribute("name2", "so_btn2");
+        } else{
+            model.addAttribute("name1", "so_btn2");
+            model.addAttribute("name2", "so_btn1");
+        }
         Page<Answer> ansPaging = this.answerService.getList(question, ansPage, so);
         model.addAttribute("ansPaging", ansPaging);
         model.addAttribute("question", question);
-        model.addAttribute("so", so);
+
         return "question_detail";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/create")
-    public String questionCreate(QuestionForm questionForm) {
+    @GetMapping("/{category}/create")
+    public String questionCreate(Model model, @PathVariable("category") Integer category, QuestionForm questionForm) {
+        model.addAttribute(category);
         return "question_form";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/create")
-    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
+    @PostMapping("/{category}/create")
+    public String questionCreate(Model model, @PathVariable("category") Integer category, @Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(category);
             return "question_form";
         }
         SiteUser siteUser = this.userService.getUser(principal.getName());
 
-        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser);
-        return "redirect:/question/list"; // 질문 저장후 질문목록으로 이동
+        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser, category);
+        return String.format("redirect:/question/%d/list", category); // 질문 저장후 질문목록으로 이동
     }
 
     @PreAuthorize("isAuthenticated()")

@@ -63,4 +63,9 @@ public class UserController {
         model.addAttribute("user", user);
         return "profile_form";
     }
+
+    @GetMapping("/findPassword")
+    public String findPW(){
+        return "input_email";
+    }
 }

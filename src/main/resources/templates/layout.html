@@ -9,7 +9,18 @@
   <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
   <!-- sbb CSS -->
   <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+
+  <!-- Bootstrap JS -->
+  <script th:src="@{/bootstrap.min.js}"></script>
+  <script th:src="@{/bootstrap.bundle.js}"></script>
   <title>Hello, sbb!</title>
+
+  <!-- 네비게이션바 드롭다운 메뉴를 위해 추가 -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
 </head>
 <body>
 <!-- 네비게이션바 -->
@@ -18,9 +29,6 @@
 <!-- 기본 템플릿 안에 삽입될 내용 Start -->
 <th:block layout:fragment="content"></th:block>
 <!-- 기본 템플릿 안에 삽입될 내용 End -->
-
-<!-- Bootstrap JS -->
-<script th:src="@{/bootstrap.min.js}"></script>
 
 <!-- 자바스크립트 Start -->
 <th:block layout:fragment="script"></th:block>

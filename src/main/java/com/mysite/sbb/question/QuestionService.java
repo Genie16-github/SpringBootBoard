@@ -23,7 +23,7 @@ import java.util.Optional;
 public class QuestionService {
     private final QuestionRepository questionRepository;
 
-    private Specification<Question> search(String kw) {
+    private Specification<Question> search(String kw, int category) {
         return new Specification<>() {
             @Serial
             private static final long serialVersionUID = 1L;
@@ -33,11 +33,12 @@ public class QuestionService {
                 Join<Question, SiteUser> u1 = q.join("author", JoinType.LEFT);
                 Join<Question, Answer> a = q.join("answerList", JoinType.LEFT);
                 Join<Answer, SiteUser> u2 = a.join("author", JoinType.LEFT);
-                return cb.or(cb.like(q.get("subject"), "%" + kw + "%"), // 제목
+                return cb.and(cb.equal(q.get("category"), category),
+                        cb.or(cb.like(q.get("subject"), "%" + kw + "%"), // 제목
                         cb.like(q.get("content"), "%" + kw + "%"),      // 내용
                         cb.like(u1.get("username"), "%" + kw + "%"),    // 질문 작성자
                         cb.like(a.get("content"), "%" + kw + "%"),      // 답변 내용
-                        cb.like(u2.get("username"), "%" + kw + "%"));   // 답변 작성자
+                        cb.like(u2.get("username"), "%" + kw + "%")));   // 답변 작성자
             }
         };
     }
@@ -55,12 +56,13 @@ public class QuestionService {
         }
     }
 
-    public void create(String subject, String content, SiteUser user) {
+    public void create(String subject, String content, SiteUser user, Integer category) {
         Question q = new Question();
         q.setSubject(subject);
         q.setContent(content);
         q.setAuthor(user);
         q.setCreateDate(LocalDateTime.now());
+        q.setCategory(category);
         this.questionRepository.save(q);
     }
 
@@ -80,11 +82,11 @@ public class QuestionService {
         this.questionRepository.save(question);
     }
 
-    public Page<Question> getList(int page, String kw) {
+    public Page<Question> getList(int page, String kw, int category) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        Specification<Question> spec = search(kw);
+        Specification<Question> spec = search(kw, category);
         return this.questionRepository.findAll(spec, pageable);
     }
 
