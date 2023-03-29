@@ -1,14 +1,18 @@
 package com.mysite.sbb.user;
 
+import com.mysite.sbb.question.Question;
+import com.mysite.sbb.question.QuestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
@@ -18,6 +22,7 @@ import java.security.Principal;
 public class UserController {
 
     private final UserService userService;
+    private final QuestionService questionService;
 
     @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm) {
@@ -58,9 +63,12 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String profile(Model model, Principal principal) {
+    public String profile(Model model, @RequestParam(value="page", defaultValue="0") int page,
+                          @RequestParam(value = "kw", defaultValue = "") String kw, Principal principal) {
         SiteUser user = this.userService.getUser(principal.getName());
+        Page<Question> paging = this.questionService.getQuestionList(page, kw, user);
         model.addAttribute("user", user);
+        model.addAttribute("paging", paging);
         return "profile_form";
     }
 

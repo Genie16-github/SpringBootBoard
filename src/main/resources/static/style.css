@@ -21,3 +21,7 @@ button[name="so_btn2"] {
     color: #000000;
     --bs-btn-hover-bg: #6799FF;
 }
+
+label[for^='info_'] {
+    color: #8C8C8C;
+}

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
@@ -93,5 +94,14 @@ public class QuestionService {
     public void viewPlus(Question question) {
         question.setView(question.getView() + 1);
         this.questionRepository.save(question);
+    }
+
+
+    public Page<Question> getQuestionList(int page, String kw, SiteUser user) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 5, Sort.by(sorts));
+
+        return this.questionRepository.findByAuthor(pageable, user);
     }
 }
