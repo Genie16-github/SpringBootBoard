@@ -10,14 +10,13 @@ import com.mysite.sbb.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 
@@ -55,5 +54,20 @@ public class CommentController {
         model.addAttribute("so", so);
         return String.format("redirect:/question/detail/%s?ansPage=%s&so=%s#answer-%s", comment.getAnswer().getQuestion().getId(), page, so, comment.getAnswer().getId());
 
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String answerDelete(Principal principal, @PathVariable("id") Integer id) {
+        Comment comment = this.commentService.getComment(id);
+        Answer answer = this.answerService.getAnswer(comment.getAnswer().getId());
+
+        if (!comment.getAuthor().getUsername().equals(principal.getName())
+                && !answer.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+        }
+
+        this.commentService.delete(comment);
+        return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
     }
 }

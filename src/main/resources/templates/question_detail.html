@@ -143,6 +143,11 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
+                                <a href="javascript:void(0);" th:data-uri="@{|/comment/delete/${comments.id}|}"
+                                   class="delete btn btn-sm btn-danger" sec:authorize="isAuthenticated()"
+                                   th:if="${(answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username)
+                                   or (comments.author != null and #authentication.getPrincipal().getUsername() == comments.author.username)}"
+                                   th:text="삭제"></a>
                                 <div class="flex-shrink-0 badge bg-light text-dark p-2 text-start mx-2">
                                     <span th:if="${comments.author != null}"
                                           th:text="${comments.author.username}"></span>
